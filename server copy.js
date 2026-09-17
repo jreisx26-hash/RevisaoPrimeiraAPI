@@ -1,6 +1,5 @@
 const express =  require("express");
 const cors =  require("cors");
-const conexao = require("./db.js");
 
 const app = express();
 
@@ -8,12 +7,12 @@ app.use(cors());
 app.use(express.json());
 
 
- let ALUNOS = [
-     {id: 1, nome: "Reis", curso: "Desenvolvimento de Sistemas"},
-     {id: 2, nome: "João", curso: "Redes de computadores"},
-     {id: 3, nome: "Pablo", curso: "Metalurgia"},
-     {id: 4, nome: "Júlia", curso: "Banco de Dados"},
- ];
+let ALUNOS = [
+    {id: 1, nome: "Reis", curso: "Desenvolvimento de Sistemas"},
+    {id: 2, nome: "João", curso: "Redes de computadores"},
+    {id: 3, nome: "Pablo", curso: "Metalurgia"},
+    {id: 4, nome: "Júlia", curso: "Banco de Dados"},
+];
 
 app.get("/", (req, res) => {
     res.json({
@@ -21,21 +20,15 @@ app.get("/", (req, res) => {
     });
 });
 
-app.get("/alunos",async (req, res) => {
-    try{
-       const [resultado] = await conexao.query('SELECT * FROM alunos;')
-    res.status(200).json(resultado);    
-    }catch (error) {
-     console.log(error);
-     res.status(500).json({
-        mensagem: "Erro ao buscar alunos"
-     })
-    }
+app.get("/alunos", (req, res) => {
+    res.json(ALUNOS);
 });
 
 app.get("/alunos/:id", (req, res) => {
+
       const id = Number(req.params.id); 
       
+    
       const aluno = ALUNOS.find(a => a.id === id);
      
       if(!aluno){
